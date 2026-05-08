@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Abhay Maheshwari — RIL Internship 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,600;0,700;1,300&family=Barlow+Condensed:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --k:#080808; --w:#F4EFE6; --r:#D93B1F;
+  --g:#1E1E1E; --g2:#2C2C2C; --mid:#666; --dim:#444;
+  --FD:'Bebas Neue',sans-serif;
+  --FB:'Barlow',sans-serif;
+  --FC:'Barlow Condensed',sans-serif;
+}
+
+html,body{width:100%;height:100%;overflow:hidden;background:var(--k);color:var(--w);cursor:none}
+body.light-bg{background:var(--w)}
+
+#cur{position:fixed;top:0;left:0;pointer-events:none;width:9px;height:9px;background:var(--r);border-radius:50%;transform:translate(-50%,-50%);transition:transform .08s;z-index:9999;mix-blend-mode:difference}
+#cur.big{transform:translate(-50%,-50%) scale(5)}
+#prog{position:fixed;top:0;left:0;height:2px;background:var(--r);transition:width .5s cubic-bezier(.77,0,.175,1);z-index:500}
+#ctr{position:fixed;top:2rem;right:2.5rem;font-family:var(--FC);font-size:11px;font-weight:600;letter-spacing:.22em;color:rgba(244,239,230,.2);z-index:300;transition:color .3s}
+#ctr.dark{color:rgba(8,8,8,.18)}
+#nav{position:fixed;bottom:2.2rem;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:.4rem;z-index:300}
+.dot{width:5px;height:5px;border-radius:50%;background:rgba(244,239,230,.2);cursor:none;transition:all .3s}
+.dot.on{background:var(--r);width:20px;border-radius:2.5px}
+#nav.dark .dot{background:rgba(8,8,8,.15)}
+#nav.dark .dot.on{background:var(--k)}
+#arws{position:fixed;right:2rem;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:.4rem;z-index:300}
+.arwb{width:34px;height:34px;background:none;border:1.5px solid rgba(244,239,230,.1);color:rgba(244,239,230,.3);font-size:14px;cursor:none;display:flex;align-items:center;justify-content:center;transition:all .2s;font-family:var(--FB)}
+.arwb:hover{border-color:var(--r);color:var(--r)}
+#hint{position:fixed;bottom:5rem;left:50%;transform:translateX(-50%);font-family:var(--FC);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:rgba(244,239,230,.18);z-index:300;transition:opacity .6s}
+
+#deck{position:fixed;inset:0}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:5.5vw 7vw;opacity:0;pointer-events:none;transition:opacity .5s cubic-bezier(.77,0,.175,1);overflow:hidden}
+.slide.on{opacity:1;pointer-events:all}
+.slide::after{content:'';position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");pointer-events:none;z-index:0}
+.slide>*{position:relative;z-index:1}
+
+.bk{background:var(--k)} .bw{background:var(--w);color:var(--k)}
+.br{background:var(--r);color:var(--k)} .bg{background:var(--g)} .bg2{background:var(--g2)}
+
+/* typography */
+.HD{font-family:var(--FD);font-size:clamp(72px,13vw,190px);line-height:.88;letter-spacing:.01em;text-transform:uppercase}
+.HM{font-family:var(--FD);font-size:clamp(48px,8vw,115px);line-height:.9;letter-spacing:.01em;text-transform:uppercase}
+.LBL{font-family:var(--FC);font-size:clamp(10px,1vw,13px);font-weight:600;letter-spacing:.28em;text-transform:uppercase;opacity:.42;margin-bottom:1rem}
+.BODY{font-family:var(--FB);font-size:clamp(13px,1.3vw,17px);font-weight:300;line-height:1.65}
+.RED{color:var(--r)}
+.bw .RED,.br .RED{color:rgba(0,0,0,.5)}
+
+/* entrance */
+.slide.on .ai{animation:up .6s cubic-bezier(.16,1,.3,1) forwards}
+.ai{opacity:0}
+.slide.on .ai:nth-child(1){animation-delay:.04s}
+.slide.on .ai:nth-child(2){animation-delay:.13s}
+.slide.on .ai:nth-child(3){animation-delay:.22s}
+.slide.on .ai:nth-child(4){animation-delay:.31s}
+.slide.on .ai:nth-child(5){animation-delay:.40s}
+.slide.on .ai:nth-child(6){animation-delay:.49s}
+@keyframes up{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+
+/* ─── shared components ─── */
+.tag{font-family:var(--FC);font-size:11px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;padding:.28rem .75rem;border:1.5px solid currentColor;opacity:.55}
+.pill{display:inline-block;font-family:var(--FC);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:.22rem .65rem;border:1px solid rgba(244,239,230,.12);margin:.2rem;color:#888;transition:all .2s}
+.pill:hover{border-color:var(--r);color:var(--w)}
+
+/* bullet list */
+.blist{list-style:none}
+.blist li{font-family:var(--FB);font-size:clamp(12px,1.15vw,14.5px);font-weight:300;line-height:1.5;padding:.55rem 0;border-bottom:1px solid rgba(244,239,230,.07);padding-left:1.1rem;position:relative;color:#ccc}
+.blist li::before{content:'';position:absolute;left:0;top:.9rem;width:5px;height:5px;background:var(--r);border-radius:50%}
+.blist li b{font-weight:600;color:var(--w)}
+.bw .blist li{color:rgba(0,0,0,.65);border-bottom-color:rgba(0,0,0,.08)}
+.bw .blist li::before{background:var(--k)}
+.bw .blist li b{color:var(--k)}
+
+/* arrow list */
+.alist{list-style:none}
+.alist li{font-family:var(--FB);font-size:13px;font-weight:300;line-height:1.5;padding:.45rem 0;border-bottom:1px solid rgba(244,239,230,.06);display:flex;gap:.7rem;color:#bbb}
+.alist li::before{content:'→';font-family:var(--FC);font-weight:700;font-size:12px;color:var(--r);flex-shrink:0}
+.alist li b{font-weight:600;color:var(--w)}
+
+/* 2-col layout */
+.two{display:grid;grid-template-columns:1.2fr 1fr;gap:5vw;align-items:start;margin-top:2rem}
+.two-eq{display:grid;grid-template-columns:1fr 1fr;gap:5vw;align-items:start;margin-top:2rem}
+
+/* section heading inside slides */
+.sh{font-family:var(--FC);font-size:10px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;opacity:.35;margin-bottom:.8rem;padding-bottom:.4rem;border-bottom:2px solid currentColor}
+
+/* ─── SLIDE 0 — TITLE ─── */
+.s0 .ghost{position:absolute;right:5vw;top:50%;transform:translateY(-50%);font-family:var(--FD);font-size:clamp(180px,26vw,340px);line-height:1;color:var(--g);user-select:none;pointer-events:none}
+.s0 .eye{font-family:var(--FC);font-size:clamp(11px,1.1vw,14px);font-weight:400;letter-spacing:.2em;text-transform:uppercase;color:var(--r);margin-bottom:1.8rem}
+.s0 .role{font-family:var(--FC);font-size:clamp(15px,2vw,30px);font-weight:300;letter-spacing:.08em;margin-top:2rem;color:var(--mid)}
+.s0 .role b{color:var(--w);font-weight:600}
+.s0 .corner{position:absolute;bottom:5.5vw;right:7vw;font-family:var(--FC);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);text-align:right;line-height:2.1}
+
+/* ─── SLIDE 1 — ABOUT ─── */
+.s1 .bignums{display:flex;flex-direction:column;gap:1.8rem}
+.s1 .bn .n{font-family:var(--FD);font-size:clamp(52px,6.5vw,84px);line-height:1}
+.s1 .bn .nl{font-family:var(--FC);font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;opacity:.38;margin-top:.15rem}
+.s1 .tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1.2rem}
+
+/* ─── SLIDE 2 — OVERVIEW ─── */
+.s2 .proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:2rem}
+.pc{background:var(--g);padding:2.2rem 2rem;position:relative;overflow:hidden}
+.pc::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--r);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.pc:hover::after{transform:scaleX(1)}
+.pc .pn{font-family:var(--FD);font-size:72px;line-height:1;color:var(--r)}
+.pc .pt{font-family:var(--FC);font-size:20px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin:.4rem 0 .8rem}
+.pc .pd{font-family:var(--FB);font-size:13px;font-weight:300;line-height:1.6;color:#999}
+.pc .pstat{font-family:var(--FC);font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--r);margin-top:1.2rem}
+
+/* ─── SLIDE 3 — EMPLOYEE MANAGER ─── */
+.s-emp{position:relative;justify-content:flex-start;padding-top:4.2vw;padding-bottom:3.2vw}
+.s-emp .two{display:block;max-width:58%;margin-top:1rem}
+.s-emp .emp-kicker{font-family:var(--FC);font-size:10px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--r);margin-top:1.1rem}
+.s-emp .emp-shots{position:absolute;right:7vw;top:18%;width:min(34vw,420px);display:grid;grid-template-columns:1fr;gap:8px;align-content:start}
+.s-emp .emp-shots img{width:100%;aspect-ratio:16/9;height:auto;object-fit:cover;display:block}
+.s-emp .cap{font-family:var(--FC);font-size:10px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;opacity:.42;margin-top:.55rem}
+
+/* ─── SLIDE 3 — VMS WHAT IT DOES ─── */
+.s3 .vms-shell{
+  margin-top:1.2rem;
+  display:grid;
+  gap:1rem;
+}
+.s3 .vms-lead{
+  background:linear-gradient(145deg, rgba(255,255,255,.04), rgba(255,255,255,.01));
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:16px;
+  padding:1.15rem 1.25rem;
+  box-shadow:0 18px 42px rgba(0,0,0,.28);
+  display:grid;
+  grid-template-rows:auto auto 1fr auto;
+}
+.s3 .vms-kicker{
+  font-family:var(--FC);
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--r);
+  margin-bottom:.7rem;
+}
+.s3 .vms-before-after{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:.75rem;
+}
+.s3 .vms-ba{
+  border-left:2px solid rgba(255,255,255,.16);
+  padding-left:.85rem;
+}
+.s3 .vms-ba b{
+  display:block;
+  font-family:var(--FC);
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--w);
+  margin-bottom:.2rem;
+}
+.s3 .vms-ba span{
+  font-family:var(--FB);
+  font-size:12.5px;
+  font-weight:300;
+  line-height:1.45;
+  color:#b3b3b3;
+}
+.s3 .vms-impact{
+  margin-top:.8rem;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:2px;
+}
+.s3 .imp{
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.08);
+  padding:.65rem .55rem;
+}
+.s3 .imp .in{
+  font-family:var(--FD);
+  font-size:26px;
+  line-height:1;
+  color:var(--r);
+}
+.s3 .imp .il{
+  font-family:var(--FC);
+  font-size:8.5px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:#a1a1a1;
+  margin-top:.2rem;
+}
+.s3 .roles{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:2px;
+  margin-top:1rem;
+}
+.s3 .rc{
+  background:rgba(217,59,31,.08);
+  border:1px solid rgba(217,59,31,.2);
+  padding:1rem .8rem;
+  text-align:center;
+}
+.s3 .rc .ri{
+  font-family:var(--FD);
+  font-size:30px;
+  line-height:1;
+  color:var(--r);
+}
+.s3 .rc .rl{
+  font-family:var(--FC);
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:#888;
+  margin-top:.35rem;
+}
+.s3 .vms-note{
+  font-family:var(--FC);
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--r);
+  margin-top:1.1rem;
+}
+
+/* ─── SLIDE 4 — VMS FEATURES ─── */
+/* uses .two + .blist */
+
+/* ─── SLIDE 6 — VMS WORKFLOW ─── */
+.s-flow .flow-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px;margin-top:2rem}
+.s-flow .fc{background:var(--g);padding:1.35rem 1.1rem;position:relative;min-height:186px}
+.s-flow .fn{font-family:var(--FD);font-size:42px;line-height:1;color:var(--r)}
+.s-flow .ft{font-family:var(--FC);font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-top:.45rem}
+.s-flow .fd{font-family:var(--FB);font-size:11.5px;font-weight:300;line-height:1.45;color:#9d9d9d;margin-top:.6rem}
+.s-flow .frole{display:inline-block;font-family:var(--FC);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--r);margin-top:.85rem}
+
+/* ─── SLIDE 7 / 12 — SCREENSHOT GALLERIES ─── */
+.shotwrap{display:grid;gap:1.5rem;margin-top:1.8rem;align-items:center}
+.s-shot-vms{justify-content:flex-start;padding-top:4.4vw;padding-bottom:3.6vw}
+.s-shot-vms .HM{font-size:clamp(56px,7.2vw,104px);line-height:.9}
+.s-shot-vms .shotwrap{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:.75rem;
+  margin-top:1rem;
+}
+.s-shot-vms .shotwrap > div{
+  aspect-ratio:16/9;
+  background:#0f0f0f;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:10px;
+  overflow:hidden;
+}
+.s-shot-vms .shotwrap img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:top center;
+  background:#0b0b0b;
+  border:none;
+  border-radius:0;
+  box-shadow:none;
+}
+.s-shot-cms .shotwrap{grid-template-columns:1.2fr 1fr}
+.shotwrap img{display:block;width:100%;height:auto;border-radius:8px;border:1px solid rgba(255,255,255,0.12);box-shadow:0 8px 24px rgba(0,0,0,0.4)}
+.cap{font-family:var(--FC);font-size:10px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;opacity:.4;margin-top:1rem}
+
+/* ─── SLIDE 5 — VMS SECURITY ─── */
+.s5 .sec-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.3rem 4vw;margin-top:2rem}
+.si{display:flex;gap:.85rem;align-items:flex-start}
+.si-dot{width:7px;height:7px;background:var(--r);border-radius:50%;flex-shrink:0;margin-top:5px}
+.bw .si-dot{background:var(--k)}
+.si-t{font-family:var(--FC);font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.18rem}
+.si-d{font-family:var(--FB);font-size:12px;font-weight:300;color:#888;line-height:1.4}
+.bw .si-d{color:rgba(0,0,0,.5)}
+
+/* ─── SLIDE 6 — INFRA/DEVOPS ─── */
+.s6 .infra-cols{display:grid;grid-template-columns:1fr 1fr;gap:4vw;margin-top:2rem}
+
+/* ─── SLIDE 7 — CMS WHAT IT DOES ─── */
+.s7 .cms-shell{
+  display:grid;
+  grid-template-columns:1.12fr .88fr;
+  gap:4.5vw;
+  margin-top:1.8rem;
+  align-items:start;
+}
+.s7 .cms-lead{
+  background:linear-gradient(145deg, rgba(255,255,255,.04), rgba(255,255,255,.01));
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:16px;
+  padding:1.5rem 1.6rem 1.3rem;
+  box-shadow:0 18px 42px rgba(0,0,0,.34);
+}
+.s7 .cms-kicker{
+  font-family:var(--FC);
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--r);
+  margin-bottom:.7rem;
+}
+.s7 .cms-before-after{
+  display:grid;
+  gap:.85rem;
+}
+.s7 .ba{
+  border-left:2px solid rgba(255,255,255,.16);
+  padding-left:.85rem;
+}
+.s7 .ba b{
+  display:block;
+  font-family:var(--FC);
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--w);
+  margin-bottom:.2rem;
+}
+.s7 .ba span{
+  font-family:var(--FB);
+  font-size:13px;
+  font-weight:300;
+  line-height:1.55;
+  color:#b5b5b5;
+}
+.s7 .cms-pills{
+  margin-top:1rem;
+  display:flex;
+  flex-wrap:wrap;
+  gap:.4rem;
+}
+.s7 .cms-pills .pill{
+  border-color:rgba(255,255,255,.2);
+  color:#b7b7b7;
+}
+.s7 .cms-pills .pill:hover{
+  color:var(--w);
+}
+.s7 .cms-pages{
+  background:rgba(0,0,0,.24);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:16px;
+  padding:1.4rem 1.45rem;
+}
+.s7 .cms-pages .sh{
+  color:var(--w);
+  opacity:.5;
+  margin-bottom:1rem;
+}
+.s7 .pg-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:.55rem .95rem;
+}
+.s7 .pg{
+  font-family:var(--FB);
+  font-size:13px;
+  font-weight:300;
+  color:#9f9f9f;
+  line-height:1.4;
+  padding-bottom:.45rem;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.s7 .pg strong{
+  color:var(--w);
+  font-weight:400;
+}
+.s7 .cms-total{
+  margin-top:1rem;
+  font-family:var(--FC);
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--r);
+}
+
+/* ─── SLIDE 8 — CMS FEATURES ─── */
+.s8 .pills-box{background:var(--g);padding:1.6rem}
+.s8 .pb-title{font-family:var(--FC);font-size:10px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--r);margin-bottom:.8rem}
+.s8 .pages{font-family:var(--FB);font-size:13px;font-weight:300;color:#666;line-height:2;margin-top:1.2rem}
+
+/* ─── SLIDE 9 — STRAPI POC ─── */
+.s9 .verdict{background:var(--g);padding:2rem}
+.s9 .vl{font-family:var(--FC);font-size:10px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--r);margin-bottom:.5rem}
+.s9 .vs{font-family:var(--FD);font-size:72px;line-height:1}
+.s9 .vd{font-family:var(--FB);font-size:13px;font-weight:300;color:#888;line-height:1.5;margin-top:.5rem}
+.s9 .vn{font-family:var(--FC);font-size:10px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;margin-top:1.2rem;color:var(--dim);line-height:1.8}
+
+/* ─── SLIDE 10 — CROSS-CUTTING ─── */
+.s10 .cc-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:2rem}
+.cc{background:var(--g);padding:1.8rem 1.6rem}
+.cc .cc-icon{font-family:var(--FD);font-size:40px;line-height:1;color:var(--r);margin-bottom:.5rem}
+.cc .cc-t{font-family:var(--FC);font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem}
+.cc .cc-d{font-family:var(--FB);font-size:12.5px;font-weight:300;line-height:1.5;color:#999}
+
+/* ─── SLIDE 11 — NUMBERS ─── */
+.s11 .num-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:2rem}
+.nc{background:var(--g);padding:2rem 1.6rem}
+.nc .nn{font-family:var(--FD);font-size:clamp(56px,6vw,84px);line-height:1;color:var(--r)}
+.nc .nl{font-family:var(--FC);font-size:11px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:#555;margin-top:.4rem;line-height:1.4}
+
+/* ─── SLIDE 12 — CHALLENGES ─── */
+.s12 .ch-table{width:100%;margin-top:2rem;border-collapse:collapse}
+.s12 .ch-table tr{border-bottom:1.5px solid rgba(8,8,8,.14)}
+.s12 .ch-table td{padding:.75rem 0;font-family:var(--FB);font-size:clamp(11.5px,1.1vw,14px);vertical-align:top}
+.s12 .ch-table td:first-child{font-weight:700;font-family:var(--FC);letter-spacing:.05em;text-transform:uppercase;width:33%;padding-right:2rem;color:rgba(8,8,8,.82)}
+.s12 .ch-table td:last-child{font-weight:300;color:rgba(8,8,8,.58)}
+
+/* ─── SLIDE 13 — LEARNINGS ─── */
+.s13 .lc-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:2rem}
+.lc{background:rgba(244,239,230,.04);padding:1.6rem 1.4rem}
+.bw .lc{background:rgba(8,8,8,.05)}
+.lc-head{font-family:var(--FC);font-size:10px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;opacity:.32;margin-bottom:.9rem;padding-bottom:.4rem;border-bottom:2px solid currentColor}
+.lc ul{list-style:none}
+.lc ul li{font-family:var(--FB);font-size:12.5px;font-weight:300;line-height:1.5;padding:.32rem 0;border-bottom:1px solid rgba(244,239,230,.05);padding-left:.85rem;position:relative;color:#aaa}
+.bw .lc ul li{color:rgba(0,0,0,.62);border-bottom-color:rgba(0,0,0,.06)}
+.lc ul li::before{content:'·';position:absolute;left:0;font-weight:900;opacity:.3}
+
+/* ─── SLIDE 14 — OPEN ITEMS ─── */
+.s14 .oi-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:2rem}
+.oc{background:var(--g);padding:1.6rem 1.4rem}
+.oc .och{font-family:var(--FC);font-size:10px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--r);margin-bottom:.9rem;padding-bottom:.4rem;border-bottom:1px solid rgba(217,59,31,.2)}
+.oc ul{list-style:none}
+.oc ul li{font-family:var(--FB);font-size:12.5px;font-weight:300;line-height:1.5;padding:.38rem 0;border-bottom:1px solid rgba(244,239,230,.05);padding-left:.9rem;position:relative;color:#aaa}
+.oc ul li::before{content:'○';position:absolute;left:0;font-size:8px;color:var(--r);top:.55rem}
+.s14 .oi-note{font-family:var(--FC);font-size:10px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);text-align:center;margin-top:1.5rem}
+
+/* ─── SLIDE 15 — THANK YOU ─── */
+.s15 .ty{font-family:var(--FD);font-size:clamp(90px,17vw,240px);line-height:.85}
+.s15 .ty-sub{font-family:var(--FC);font-size:clamp(14px,1.7vw,22px);font-weight:300;letter-spacing:.1em;color:var(--mid);margin-top:1.8rem;max-width:540px;line-height:1.8}
+.s15 .ty-sub b{color:var(--w);font-weight:600}
+.s15 .mentor{position:absolute;bottom:5.5vw;right:7vw;text-align:right;font-family:var(--FC);font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);line-height:2}
+.s15 .mentor b{color:var(--w);font-weight:600}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="prog"></div>
+<div id="ctr">01 / 18</div>
+<div id="hint">← → Arrow keys · Click to advance</div>
+
+<div id="deck">
+
+<!-- ════════════════════
+  00 — TITLE
+════════════════════ -->
+<div class="slide s0 bk on">
+  <div class="ghost"></div>
+  <div class="eye ai">Software Development Internship · Petchem IT · Reliance Industries Limited · 2026</div>
+  <div class="HD ai">Internship<br>Report</div>
+  <div class="role ai"><b>Abhay Maheshwari</b> · January – May 2026</div>
+  <div class="corner ai">
+    Angular 19 · Spring Boot · MySQL<br>
+    Redis · AWS S3 · Kubernetes · Istio
+  </div>
+</div>
+
+<!-- ════════════════════
+  01 — ABOUT
+════════════════════ -->
+<div class="slide s1 bw">
+  <div class="LBL ai">Who I Am</div>
+  <div class="HM ai">Abhay Maheshwari</div>
+  <div class="two ai" style="grid-template-columns: 1.2fr 1fr; gap: 5vw;">
+    <div>
+      <div style="font-family:var(--FC);font-size:22px;font-weight:600;letter-spacing:.05em;color:var(--r);margin-bottom:1.2rem;text-transform:uppercase;">
+        B.Tech CSE · VIT Vellore
+      </div>
+      <p class="BODY" style="font-size: 18px; line-height: 1.6; max-width: 90%;">Graduating July 2026. During this internship, I contributed across frontend, backend, infrastructure, and security with a focus on reliable delivery and user experience.</p>
+      
+      <div class="tags" style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:2.5rem">
+        <span class="tag" style="background:var(--k);color:var(--w);border:none;opacity:1;">Angular 19</span>
+        <span class="tag" style="background:var(--k);color:var(--w);border:none;opacity:1;">Spring Boot</span>
+        <span class="tag" style="background:var(--k);color:var(--w);border:none;opacity:1;">Kubernetes</span>
+        <span class="tag" style="background:var(--k);color:var(--w);border:none;opacity:1;">Istio</span>
+        <span class="tag" style="background:var(--k);color:var(--w);border:none;opacity:1;">AWS S3</span>
+        <span class="tag" style="background:var(--k);color:var(--w);border:none;opacity:1;">Redis</span>
+        <span class="tag" style="background:var(--k);color:var(--w);border:none;opacity:1;">MySQL</span>
+        <span class="tag" style="background:var(--k);color:var(--w);border:none;opacity:1;">Java 17</span>
+      </div>
+    </div>
+    <div class="bignums" style="border-left: 1px solid rgba(0,0,0,0.1); padding-left: 4vw;">
+      <div class="bn"><div class="n">17</div><div class="nl">Internship Weeks</div></div>
+      <div class="bn"><div class="n">2</div><div class="nl">Production Projects</div></div>
+      <div class="bn"><div class="n">9</div><div class="nl">Repos Worked Across</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════
+  02 — OVERVIEW
+════════════════════ -->
+<div class="slide s2 bk">
+  <div class="LBL ai">Internship Overview</div>
+  <div class="HM ai">Two Enterprise<br>Applications.<br>Delivered.</div>
+  <div class="proj-grid ai">
+    <div class="pc">
+      <div class="pn">01</div>
+      <div class="pt">Visitor Management System</div>
+      <div class="pd">End-to-end digital visitor management for Petchem warehouses. Replaced manual paper registers with a role-based, secure, trackable system — covering everything from OTP check-in to PII encryption to Kubernetes deployment.</div>
+      <div class="pstat">160+ Tasks · Weeks 1–17 · 5 Repos</div>
+    </div>
+    <div class="pc">
+      <div class="pn">02</div>
+      <div class="pt">CMS — R|Elan™ Brand Website</div>
+      <div class="pd">A fully dynamic CMS-driven website for Reliance's R|Elan brand. Non-technical admins can now edit content, images, and sections on any page — without touching code or filing a dev ticket.</div>
+      <div class="pstat">55+ Tasks · Weeks 13–17 · 4 Repos</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════
+  03 — EMPLOYEE MANAGER
+════════════════════ -->
+<div class="slide s-emp bw">
+  <div class="LBL ai">Week 0 — Orientation Project</div>
+  <div class="HM ai">Employee<br>Manager<br>Foundation</div>
+  <div class="two ai">
+    <div>
+      <p class="BODY" style="max-width:760px">Before transitioning to VMS and CMS, I built a complete 3-tier CRUD application to learn the stack end-to-end. This project established how I handled entity modelling, service-layer business logic, API contracts, and Angular integration before shipping enterprise modules.</p>
+      <p class="emp-kicker">Employee Entity · EmployeeRepository · EmployeeService · REST Controller</p>
+      <ul class="blist" style="margin-top:1.2rem">
+        <li><b>Backend:</b> Spring Boot 4.0.1 + JPA + MySQL with clean service and repository separation</li>
+        <li><b>Frontend:</b> Angular 21 service layer with timeout (10s), retry logic, and centralized API handling</li>
+        <li><b>Architecture:</b> Entity → Repository → Service → Controller with modular routed UI components</li>
+      </ul>
+      <div class="tags" style="display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1.2rem">
+        <span class="tag">Spring Boot 4.0.1</span><span class="tag">JPA</span><span class="tag">MySQL</span><span class="tag">Lombok</span>
+        <span class="tag">Java 17</span><span class="tag">Angular 21</span><span class="tag">RxJS</span><span class="tag">Forms</span>
+      </div>
+    </div>
+  </div>
+  <div class="emp-shots ai">
+    <div>
+      <img src="Basic Crud Img 1.png" alt="Employee Manager list view screenshot" width="1400" height="900" loading="lazy"/>
+      <div class="cap">Employee manager dashboard</div>
+    </div>
+    <div>
+      <img src="Basic Crud Img 2.png" alt="Employee Manager form view screenshot" width="1400" height="900" loading="lazy"/>
+      <div class="cap">Create new employee</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════
+  04 — VMS: WHAT IT DOES
+════════════════════ -->
+<div class="slide s3 bg">
+  <div class="LBL ai">Project 01 — VMS</div>
+  <div class="HM ai" style="color:var(--w)">Visitor Management <br>System</div>
+  <div class="vms-shell ai">
+    <div class="vms-lead">
+      <div class="vms-kicker">Digital Gatekeeping for Warehouse Access</div>
+      <div class="vms-before-after">
+        <div class="vms-ba">
+          <b>Before</b>
+          <span>Visitor entry was managed through paper logs, with weak traceability, inconsistent checks, and no real-time visibility.</span>
+        </div>
+        <div class="vms-ba">
+          <b>After</b>
+          <span>VMS delivers a controlled, role-based flow from request to exit, with OTP validation, zone mapping, and audit-ready check-in/out records.</span>
+        </div>
+      </div>
+      <div class="vms-impact">
+        <div class="imp"><div class="in">32+</div><div class="il">Vulnerabilities resolved</div></div>
+        <div class="imp"><div class="in">29</div><div class="il">Features across 4 dashboards</div></div>
+        <div class="imp"><div class="in">3</div><div class="il">Security audit tools</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="roles ai">
+    <div class="rc"><div class="ri">SA</div><div class="rl">Super Admin</div></div>
+    <div class="rc"><div class="ri">AD</div><div class="rl">Admin</div></div>
+    <div class="rc"><div class="ri">ZC</div><div class="rl">Zonal Coordinator</div></div>
+    <div class="rc"><div class="ri">SO</div><div class="rl">Security Officer</div></div>
+    <div class="rc"><div class="ri">WM</div><div class="rl">Warehouse Manager</div></div>
+  </div>
+  <p class="vms-note ai">Scoped permissions for every role, enforced through RBAC across UI, API, and data access layers</p>
+</div>
+
+<!-- ════════════════════
+  05 — VMS FEATURES
+════════════════════ -->
+<div class="slide s4 bk">
+  <div class="LBL ai">Project 01 — VMS</div>
+  <div class="HM ai">Features<br>Built</div>
+  <div class="two ai">
+    <ul class="blist">
+      <li><b>Role-based request lifecycle</b> — request, approval, check-in/out, and audit trail in one flow</li>
+      <li><b>Operations UX improvements</b> — cleaner screens, input masking, history filters, and faster daily use</li>
+      <li><b>Allocation and reporting</b> — zone allocation support with scoped report exports</li>
+    </ul>
+    <ul class="blist">
+      <li><b>Identity and verification</b> — AD auto-fetch and reliable OTP verification (SMS + Email)</li>
+      <li><b>Keyboard shortcuts system</b> — Alt+Q cheatsheet</li>
+      <li><b>Checkout notifications</b> — automated alerts for overdue visitors via scheduled task</li>
+
+    </ul>
+  </div>
+</div>
+
+<!-- ════════════════════
+  06 — VMS WORKFLOW
+════════════════════ -->
+<div class="slide s-flow bg2">
+  <div class="LBL ai">Project 01 — VMS Workflow</div>
+  <div class="HM ai" style="color:var(--w)">Authentication<br>& Flow</div>
+  <p class="BODY ai" style="color:#b7b7b7;max-width:860px;margin-top:.9rem">The core VMS lifecycle enforces strict access controls from login to check-out, ensuring only authorized personnel can manage visitor access scoped to their designated warehouses and zones.</p>
+  <div class="flow-row ai">
+    <div class="fc">
+      <div class="fn">01</div>
+      <div class="ft">Login & Verify</div>
+      <div class="fd">Username is validated in RIL internal DB and VMS DB, then OTP verification runs on mobile/SMS.</div>
+      <div class="frole">System</div>
+    </div>
+    <div class="fc">
+      <div class="fn">02</div>
+      <div class="ft">Authorization</div>
+      <div class="fd">JWT is issued after verification and carries role scope for allowed actions.</div>
+      <div class="frole">System</div>
+    </div>
+    <div class="fc">
+      <div class="fn">03</div>
+      <div class="ft">Visitor Request</div>
+      <div class="fd">Warehouse Manager creates regular requests. <br>Security Officer raises requests for internal visitors.<br>Mail is sent to visitor informing about visit.</div>
+      <div class="frole">WM · SO</div>
+    </div>
+    <div class="fc">
+      <div class="fn">04</div>
+      <div class="ft">Check-In / Out</div>
+      <div class="fd">Visitor ID is verified at the portal. <br>Security Officer handles check-in and check-out.<br>Mail is sent informing about entry and exit.</div>
+      <div class="frole">SO</div>
+    </div>
+    <div class="fc">
+      <div class="fn">05</div>
+      <div class="ft">Email Alerts</div>
+      <div class="fd">Automated emails are scheduled before checkout time and at checkout time. Overstay alerts go to admins and assigned warehouse personnel.</div>
+      <div class="frole">System · AD · WM</div>
+    </div>
+    <div class="fc">
+      <div class="fn">06</div>
+      <div class="ft">Role Access</div>
+      <div class="fd">Zonal Coord: assigned zones. <br>Admin: all warehouses in company. <br>Super Admin: all companies.</div>
+      <div class="frole">ZC · AD · SA</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════
+  07 — VMS SCREENSHOTS
+════════════════════ -->
+<div class="slide s-shot-vms bk">
+  <div class="LBL ai">Project 01 — VMS Showcase</div>
+  <div class="HM ai">VMS Screenshots</div>
+  <div class="shotwrap ai">
+    <div>
+      <img src="VMS Login.png" alt="VMS login screen" width="1400" height="900" loading="lazy"/>
+    </div>
+    <div>
+      <img src="VMS Visitor Req.png" alt="VMS visitor request screen" width="1400" height="900" loading="lazy"/>
+    </div>
+    <div>
+      <img src="VMS User Details.png" alt="VMS user details screen" width="1400" height="900" loading="lazy"/>
+    </div>
+    <div>
+      <img src="VMS Visit Creation.png" alt="VMS visit creation screen" width="1400" height="900" loading="lazy"/>
+    </div>
+    <div>
+      <img src="VMS OTP.png" alt="VMS OTP verification screen" width="1400" height="900" loading="lazy"/>
+    </div>
+    <div>
+      <img src="VMS Overstay.png" alt="VMS overstay alert screen" width="1400" height="900" loading="lazy"/>
+    </div>
+  </div>
+  <p class="cap ai">Login · Visitor Request · User Details · Visit Creation · OTP · Overstay</p>
+</div>
+
+<!-- ════════════════════
+  08 — VMS SECURITY, INFRA & BACKEND
+════════════════════ -->
+<div class="slide s-merged bk">
+  <div class="LBL ai">Project 01 — Architecture & Security</div>
+  <div class="HM ai" style="font-size:clamp(48px,6.5vw,90px)">Backend, Infra<br>& Security</div>
+  <div class="ai" style="display:grid;grid-template-columns:repeat(3,1fr);gap:3vw;margin-top:2rem">
+    
+    <div>
+      <div class="sh">Security Audit Work</div>
+      <ul class="alist">
+        <li><span><b>AES-256-CBC Encryption</b> — All visitor PII encrypted at rest with transparent decryption layer for emails</span></li>
+        <li><span><b>HP Fortify Remediation</b> — SecureRandom migration, catch blocks refactored, logs sanitized, creds removed</span></li>
+        <li><span><b>Clickjacking Defense</b> — X-Frame-Options + CSP 'self' + JS frame-busting (no single point of failure)</span></li>
+        <li><span><b>SonarQube (50+ Smells)</b> — Unused DTOs removed, ternaries extracted, code deduplicated, custom exceptions</span></li>
+        <li><span><b>BlackDuck OSS (0 Issues)</b> — npm overrides forced safe versions for transitive CVEs (tar, micromatch, etc.)</span></li>
+        <li><span><b>K8s Secrets Migration</b> — Hardcoded credentials replaced, secrets externalized across dev/QA/prod</span></li>
+      </ul>
+    </div>
+
+    <div>
+      <div class="sh">Infrastructure & DevOps</div>
+      <ul class="alist">
+        <li><span><b>Azure Pipelines CI/CD</b> — automated builds with multi-environment replication (dev, QA, prod)</span></li>
+        <li><span><b>ConfigMap Repos</b> — created from scratch (PC_SB_VMS_ConfigMap, PC_AJ_ConfigSetup)</span></li>
+        <li><span><b>bootstrap.yml Migration</b> — ConfigMap values injected before Spring application context init</span></li>
+        <li><span><b>Kubernetes 503 Fix</b> — traced to spring.application.name mismatch in ConfigMap</span></li>
+        <li><span><b>Istio VirtualService</b> — double-slash rewrite fix, match block alignment</span></li>
+        <li><span><b>HTTPS ↔ HTTP</b> — normalization across dev and QA environments</span></li>
+      </ul>
+    </div>
+
+    <div>
+      <div class="sh">Backend Engineering</div>
+      <ul class="alist">
+        <li><span><b>RBAC Harmonization</b> — unified numeric and string role checks across all services</span></li>
+        <li><span><b>Spring @Cacheable</b> — on Company / Warehouse / Zone, eliminated N+1 query pattern</span></li>
+        <li><span><b>Jakarta Validation</b> — @Pattern, @NotBlank, @Email, @Positive across every input DTO</span></li>
+        <li><span><b>JWT Claims</b> — sidebar data moved to JWT, eliminated redundant DB calls on every request</span></li>
+        <li><span><b>Fail-safe Pattern</b> — Left Join with "unknown" fallback prevents null pointer crashes</span></li>
+        <li><span><b>Redis Integration</b> — caching layer for high-volume data retrieval endpoints</span></li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════
+  10 — CMS: WHAT IT DOES
+════════════════════ -->
+<div class="slide s7 bg2">
+  <div class="LBL ai">Project 02 — CMS</div>
+  <div class="HM ai" style="color:var(--w)">The R|Elan™<br>Brand Website</div>
+  <div class="cms-shell ai">
+    <div class="cms-lead">
+      <div class="cms-kicker">Content Control, Not Code Dependency</div>
+      <div class="cms-before-after">
+        <div class="ba">
+          <b>Before</b>
+          <span>Static hardcoded HTML pages. Content updates and image changes always needed developer intervention and redeployment.</span>
+        </div>
+        <div class="ba">
+          <b>After</b>
+          <span>Fully dynamic CMS-driven experience where non-technical admins add sections, edit content, reorder blocks, and upload assets directly.</span>
+        </div>
+      </div>
+      <div class="cms-pills">
+        <span class="pill">Angular 19</span><span class="pill">Spring Boot</span>
+        <span class="pill">AWS S3</span><span class="pill">CloudFront</span>
+        <span class="pill">Canvas API</span><span class="pill">CDK Drag</span>
+        <span class="pill">Intersection Observer</span><span class="pill">WebP</span>
+      </div>
+    </div>
+    <div class="cms-pages">
+      <div class="sh">Pages Migrated / Built</div>
+      <div class="pg-grid">
+        <div class="pg"><strong>Trendbook</strong></div>
+        <div class="pg"><strong>EarthTee</strong></div>
+        <div class="pg"><strong>Circular Design Challenge</strong></div>
+        <div class="pg"><strong>Lakme Fashion Week</strong></div>
+        <div class="pg"><strong>R-Story</strong></div>
+        <div class="pg"><strong>Home</strong></div>
+        <div class="pg"><strong>Article</strong></div>
+        <div class="pg"><strong>Timeline</strong></div>
+        <div class="pg"><strong>Innovation Station</strong></div>
+        <div class="pg"><strong>Green Ambitions</strong></div>
+      </div>
+      <div class="cms-total">~40 Total Pages / Sections</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════
+  11 — CMS FEATURES
+════════════════════ -->
+<div class="slide s8 bk">
+  <div class="LBL ai">Project 02 — CMS</div>
+  <div class="HM ai">Features<br>Built</div>
+  <div class="two ai">
+    <ul class="blist">
+      <li><b>Admin panel page editor</b> — content managers add, edit, and reorder sections on any page without touching code</li>
+      <li><b>Section drag-and-drop reordering</b> with Angular CDK Drag and full backend persistence</li>
+      <li><b>Block alias architecture</b> — CMS backend field keys mapped to frontend view models for complete admin editability</li>
+      <li><b>Client-side image compression</b> — ImageCompressionService using Canvas API + WebP conversion; zero backend processing needed</li>
+      <li><b>LazyBlobSrcDirective</b> — Intersection Observer-based lazy loading with blob URL management for media-heavy pages</li>
+      <li><b>Chunked parallel blob downloads</b> — bounded concurrency pipeline with in-flight request deduplication</li>
+    </ul>
+    <div>
+      <ul class="blist" style="margin-bottom:1.2rem">
+        <li><b>AWS S3 migration</b> to FLMBLOB_fed bucket with CloudFront + OAC architecture evaluated</li>
+        <li><b>QA vs Dev divergence fix</b> — diffed 4+ config repos; resolved image bucket mismatch, APIM path malformations, CORS failures</li>
+        <li><b>Secure social embed strategy</b> — replaced iframe-based social feeds to eliminate clickjacking surface</li>
+        <li><b>Upload limit raised to 50MB</b> — aligned Spring Boot, Nginx proxy buffers, and K8s ingress annotations</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════
+  12 — CMS SCREENSHOTS
+════════════════════ -->
+<div class="slide s-shot-cms bg">
+  <div class="LBL ai">Project 02 — CMS Showcase</div>
+  <div class="HM ai" style="color:var(--w)">CMS<br>Screenshots</div>
+  <div class="shotwrap ai">
+    <div>
+      <img src="CMS LFW.png" alt="CMS Lakme Fashion Week page screenshot" width="1400" height="900" loading="lazy"/>
+    </div>
+    <div>
+      <img src="CMS Edit 1.png" alt="CMS edit panel screenshot" width="1400" height="900" loading="lazy"/>
+    </div>
+  </div>
+  <p class="cap ai" style="color:#d0d0d0">Lakme Fashion Week Experience · Admin Editing Panel</p>
+</div>
+
+<!-- ════════════════════
+  13 — STRAPI POC
+════════════════════ -->
+<div class="slide s9 bg">
+  <div class="LBL ai">Independent Judgment</div>
+  <div class="HM ai" style="color:var(--w)">Strapi v4<br>Evaluation</div>
+  <div class="two ai">
+    <ul class="blist">
+      <li><b>Full local PoC</b> — Strapi v4 on port 1337 with PostgreSQL; Azure App Service deployment plan provisioned</li>
+      <li><b>6 content type schemas</b> — GlobalSEO, PageMeta, HeroSection, TextBlock, MediaBlock, NavigationItem — all indexed by pageSlug</li>
+      <li><b>Angular CmsService prototype</b> — HttpClient + shareReplay(1) caching, typed interfaces, graceful fallback on CMS unreachability</li>
+      <li><b>Role configuration</b> — Admin (full CRUD + publish), Editor (draft only), read-only public API token</li>
+      <li><b>Data seeding scripts</b> — seed-cms-data.js with auto-publish and duplicate-detection</li>
+      <li><b>SSR architecture plan</b> — TransferState caching, data aggregation layer, deployment separation strategy documented</li>
+      <li><b>JSON shape mismatch fix</b> — diagnosed data[].attributes Strapi v4 response mismatch with Angular renderer</li>
+    </ul>
+    <div class="verdict">
+      <div class="vl">Architecture Recommendation</div>
+      <div class="vs">9<span style="font-size:.4em;opacity:.4">/10</span></div>
+      <div class="vd">CloudFront + Strapi v4 rated viable for future iteration. Evaluated before committing to custom Spring Boot backend — not just built what was assigned.</div>
+      <div class="vn">8 tasks · Full PoC completed<br>Azure deployment planned<br>Architecture doc written</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════
+  14 — NUMBERS
+════════════════════ -->
+<div class="slide s11 bk">
+  <div class="LBL ai">By the Numbers</div>
+  <div class="HM ai">The<br>Impact</div>
+  <div class="num-grid ai">
+    <div class="nc"><div class="nn">160+</div><div class="nl">VMS Tasks Completed</div></div>
+    <div class="nc"><div class="nn">55+</div><div class="nl">CMS Tasks Completed</div></div>
+    <div class="nc"><div class="nn">17</div><div class="nl">Weeks, 2 Projects</div></div>
+    <div class="nc"><div class="nn">0</div><div class="nl">npm Audit Issues After Remediation</div></div>
+    <div class="nc"><div class="nn">50+</div><div class="nl">SonarQube Smells Fixed</div></div>
+    <div class="nc"><div class="nn">13</div><div class="nl">Pages / Sections Migrated to CMS</div></div>
+    <div class="nc"><div class="nn">6</div><div class="nl">Strapi Content Types Designed</div></div>
+    <div class="nc"><div class="nn">4</div><div class="nl">Role-based Dashboards Built</div></div>
+    <div class="nc"><div class="nn">3</div><div class="nl">Security Audit Tools Used in Production</div></div>
+  </div>
+</div>
+
+<!-- ════════════════════
+  15 — CHALLENGES
+════════════════════ -->
+<div class="slide s12 br">
+  <div class="LBL ai" style="opacity:.4">Real Problems</div>
+  <div class="HM ai">Challenges<br>Solved</div>
+  <table class="ch-table ai">
+    <tr><td>503 Kubernetes Error</td><td>spring.application.name mismatch in ConfigMap; traced across 4 config repos, fixed VirtualService routing and double-slash rewrite</td></tr>
+    <tr><td>OTP Dual-mode Bug</td><td>SMS + email each generated a separate transaction ID — "both" mode always failed verification; unified to single shared token</td></tr>
+    <tr><td>Transitive CVE (tar)</td><td>npm overrides in package.json forced tar@7.5.11 without waiting for upstream — pattern now reused for all future transitive CVEs</td></tr>
+    <tr><td>PII Encryption Breaking Email</td><td>Encrypted storage meant email dispatch received ciphertext; added transparent decryption layer before notification pipeline</td></tr>
+    <tr><td>QA vs Dev Image Failures</td><td>Diffed 4+ config repos end to end; found bucket name mismatch, APIM path malformations, CORS header misalignment all in combination</td></tr>
+    <tr><td>bootstrap.yml Config Order</td><td>Spring context initializing before ConfigMap injection; migrated from application.yml to bootstrap.yml to fix load order</td></tr>
+    <tr><td>Strapi No-Change Loop</td><td>data[].attributes JSON shape mismatch between Strapi v4 response and Angular renderer; fixed slug mapping and cache invalidation gaps</td></tr>
+  </table>
+</div>
+
+<!-- ════════════════════
+  16 — LEARNINGS
+════════════════════ -->
+<div class="slide s13 bw">
+  <div class="LBL ai">Key Takeaways</div>
+  <div class="HM ai">What I<br>Learned</div>
+  <div class="lc-cols ai">
+    <div class="lc">
+      <div class="lc-head">VMS</div>
+      <ul>
+        <li>Multi-layered enterprise security design</li>
+        <li>Kubernetes + Istio in real production</li>
+        <li>Spring Cloud config bootstrap ordering</li>
+        <li>SonarQube-driven refactoring discipline</li>
+        <li>Active Directory + IAM integration</li>
+        <li>JWT payload design for sidebar data</li>
+        <li>Redis caching for high-volume APIs</li>
+      </ul>
+    </div>
+    <div class="lc">
+      <div class="lc-head">CMS</div>
+      <ul>
+        <li>Headless CMS architecture evaluation</li>
+        <li>AWS S3 + CloudFront OAC design</li>
+        <li>Client-side media optimization pipelines</li>
+        <li>Admin panel engineering at scale</li>
+        <li>Blob concurrency download design</li>
+        <li>Cross-environment debugging discipline</li>
+        <li>Strapi v4 content modelling + roles</li>
+      </ul>
+    </div>
+    <div class="lc">
+      <div class="lc-head">Enterprise</div>
+      <ul>
+        <li>Navigating 9 production repos simultaneously</li>
+        <li>Shipping under real deployment constraints</li>
+        <li>Running 4 parallel workstreams without drops</li>
+        <li>Security-first development mindset</li>
+        <li>Writing for non-technical stakeholders</li>
+        <li>Evaluating tech before committing to it</li>
+        <li>Clean handoff as part of delivery</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════
+  17 — OPEN ITEMS
+════════════════════ -->
+<div class="slide s14 bg">
+  <div class="LBL ai">Clean Handoff</div>
+  <div class="HM ai" style="color:var(--w)">Open<br>Items</div>
+  <div class="oi-cols ai">
+    <div class="oc">
+      <div class="och">VMS</div>
+      <ul>
+        <li>QA deploy parity — verify deployed config matches repo after latest fixes</li>
+        <li>OTP external 401 full closure — confirm end-to-end in QA environment</li>
+        <li>Internal server autofill completion verification</li>
+      </ul>
+    </div>
+    <div class="oc">
+      <div class="och">CMS</div>
+      <ul>
+        <li>Home page production parity — final alignment pass between QA and prod</li>
+        <li>Top Stories ↔ Newsletters connection — expected behavior to be locked</li>
+        <li>Footer editability coverage verification</li>
+        <li>.dockerignore optimization to reduce CI build context</li>
+      </ul>
+    </div>
+    <div class="oc">
+      <div class="och">Strapi PoC</div>
+      <ul>
+        <li>Run edit → publish → frontend reflect checklist under stable Node toolchain</li>
+        <li>Align Docker base image Node version with dependency engine requirements</li>
+        <li>Azure App Service deployment to complete if PoC is taken forward</li>
+      </ul>
+    </div>
+  </div>
+  <div class="oi-note ai">Surfacing open items is part of a clean handoff — not a gap in delivery.</div>
+</div>
+
+<!-- ════════════════════
+  18 — THANK YOU
+════════════════════ -->
+<div class="slide s15 bk">
+  <div class="ty ai">THANK<br>YOU</div>
+  <div class="ty-sub ai">
+    Built and shipped — not just learned.<br>
+    <b>Petchem IT · Reliance Industries Limited · 2026</b>
+  </div>
+  <div class="mentor ai">
+    Mentor<br>
+    <b>Mrs. Madhurika Tiwari</b><br>
+    Petchem IT, RIL
+  </div>
+</div>
+
+</div><!-- /deck -->
+
+<div id="nav"></div>
+<div id="arws">
+  <button class="arwb" id="prev">↑</button>
+  <button class="arwb" id="next">↓</button>
+</div>
+
+<script>
+const slides = Array.from(document.querySelectorAll('.slide'));
+const nav = document.getElementById('nav');
+const ctr = document.getElementById('ctr');
+const prog = document.getElementById('prog');
+const hint = document.getElementById('hint');
+const TOTAL = slides.length;
+let cur = 0, busy = false;
+
+// slides with light backgrounds
+const lightSlides = new Set([1, 3, 15]);
+
+const dots = slides.map((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' on' : '');
+  d.addEventListener('click', () => goTo(i));
+  nav.appendChild(d);
+  return d;
+});
+
+function goTo(n) {
+  if (busy || n === cur) return;
+  busy = true;
+  slides[cur].querySelectorAll('.ai').forEach(el => {
+    el.style.animation = 'none'; el.offsetHeight; el.style.animation = '';
+  });
+  slides[cur].classList.remove('on');
+  dots[cur].classList.remove('on');
+  cur = ((n % TOTAL) + TOTAL) % TOTAL;
+  slides[cur].classList.add('on');
+  dots[cur].classList.add('on');
+  const pad = v => String(v).padStart(2,'0');
+  ctr.textContent = pad(cur+1) + ' / ' + pad(TOTAL);
+  prog.style.width = ((cur+1)/TOTAL*100) + '%';
+  const dark = lightSlides.has(cur);
+  ctr.classList.toggle('dark', dark);
+  nav.classList.toggle('dark', dark);
+  document.body.classList.toggle('light-bg', dark);
+  setTimeout(() => { busy = false; }, 550);
+}
+
+document.getElementById('next').addEventListener('click', () => goTo(cur+1));
+document.getElementById('prev').addEventListener('click', () => goTo(cur-1));
+document.addEventListener('keydown', e => {
+  if (['ArrowRight','ArrowDown',' '].includes(e.key)) { e.preventDefault(); goTo(cur+1); }
+  if (['ArrowLeft','ArrowUp'].includes(e.key))        { e.preventDefault(); goTo(cur-1); }
+});
+document.getElementById('deck').addEventListener('click', e => {
+  if (e.target.closest('button,.dot,.arwb')) return;
+  goTo(cur+1);
+});
+
+let tx=0,ty=0;
+document.addEventListener('touchstart', e => { tx=e.touches[0].clientX; ty=e.touches[0].clientY; });
+document.addEventListener('touchend', e => {
+  const dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
+  if (Math.abs(dx)>Math.abs(dy)){ if(dx<-50)goTo(cur+1); else if(dx>50)goTo(cur-1); }
+  else { if(dy<-50)goTo(cur+1); else if(dy>50)goTo(cur-1); }
+});
+
+const cursor = document.getElementById('cur');
+document.addEventListener('mousemove', e => { cursor.style.left=e.clientX+'px'; cursor.style.top=e.clientY+'px'; });
+document.addEventListener('mousedown', () => cursor.classList.add('big'));
+document.addEventListener('mouseup', () => cursor.classList.remove('big'));
+setTimeout(() => hint.style.opacity='0', 4000);
+prog.style.width = (1/TOTAL*100)+'%';
+</script>
+</body>
+</html>
