@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/internship-presentation-v2.html"
+    }
+  ]
+}
