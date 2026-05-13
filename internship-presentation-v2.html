@@ -438,11 +438,17 @@ body.light-bg{background:var(--w)}
 .s8 .pages{font-family:var(--FB);font-size:13px;font-weight:300;color:#666;line-height:2;margin-top:1.2rem}
 
 /* ─── SLIDE 9 — STRAPI (PATH EXPLORED, NOT SHIPPED) ─── */
-.s9 .verdict{background:var(--g);padding:2rem}
-.s9 .vl{font-family:var(--FC);font-size:10px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--r);margin-bottom:.5rem}
-.s9 .vs{font-family:var(--FD);font-size:72px;line-height:1}
-.s9 .vd{font-family:var(--FB);font-size:13px;font-weight:300;color:#888;line-height:1.5;margin-top:.5rem}
-.s9 .vn{font-family:var(--FC);font-size:10px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;margin-top:1.2rem;color:var(--dim);line-height:1.8}
+.s9 .two{align-items:stretch}
+.s9 .blist li{color:#d4d0c8}
+.s9 .s9-flow{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;margin-top:1.4rem;padding-top:1rem;border-top:1px solid rgba(244,239,230,.08)}
+.s9 .s9-flow span:not(.s9-flow-arrow){font-family:var(--FC);font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;padding:.32rem .62rem;background:rgba(244,239,230,.05);border:1px solid rgba(244,239,230,.1);color:rgba(244,239,230,.72)}
+.s9 .s9-flow-arrow{color:var(--r);font-family:var(--FC);font-weight:700;font-size:12px}
+.s9 .verdict{background:var(--g);padding:2rem;margin-top:.35rem;padding-top:1.75rem}
+.s9 .vl{font-family:var(--FC);font-size:10px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--r);margin-bottom:.85rem}
+.s9 .vs-title{font-family:var(--FD);font-size:clamp(34px,4.2vw,46px);line-height:1.05;color:rgba(244,239,230,.78)}
+.s9 .vs-sub{font-family:var(--FC);font-size:clamp(14px,1.4vw,18px);font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(244,239,230,.42);margin-top:.35rem}
+.s9 .vd{font-family:var(--FB);font-size:13.5px;font-weight:300;color:#a8a4a0;line-height:1.55;margin-top:.85rem}
+.s9 .vd-note{margin-top:.65rem}
 
 /* ─── SLIDE 10 — CROSS-CUTTING ─── */
 .s10 .cc-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:2rem}
@@ -896,17 +902,29 @@ body.light-bg{background:var(--w)}
   <div class="LBL ai">CMS architecture</div>
   <div class="HM ai" style="color:var(--w)">Strapi v4<br>Explored, not shipped</div>
   <div class="two ai">
-    <ul class="blist">
-      <li><b>PoC</b> — Strapi v4 + PostgreSQL locally; Azure App Service rollout sketched</li>
-      <li><b>Content model</b> — six types (SEO, hero, blocks, nav…), keyed by pageSlug</li>
-      <li><b>Angular hook-up</b> — typed service with caching; Strapi JSON shape aligned with the renderer</li>
-      <li><b>Governance &amp; delivery notes</b> — admin/editor/public roles, seed scripts, SSR outline</li>
-    </ul>
+    <div class="s9-main">
+      <ul class="blist">
+        <li><b>Validated the headless path</b> — Strapi v4 and PostgreSQL ran locally; Azure App Service rollout was sketched, not committed.</li>
+        <li><b>Defined a page-centric content model</b> — six types (SEO, hero, blocks, nav…), keyed by pageSlug.</li>
+        <li><b>Proved Angular integration</b> — typed service with caching; Strapi JSON matched what the renderer already expected.</li>
+        <li><b>Clarified delivery guardrails</b> — admin, editor, and public roles; seed scripts; SSR outline for a future cutover.</li>
+      </ul>
+      <div class="s9-flow" aria-label="Strapi PoC architecture flow">
+        <span>Angular</span>
+        <span class="s9-flow-arrow" aria-hidden="true">→</span>
+        <span>API</span>
+        <span class="s9-flow-arrow" aria-hidden="true">→</span>
+        <span>CMS</span>
+        <span class="s9-flow-arrow" aria-hidden="true">→</span>
+        <span>PostgreSQL</span>
+      </div>
+    </div>
     <div class="verdict">
       <div class="vl">What shipped</div>
-      <div class="vs" style="font-size:clamp(36px,5vw,56px);line-height:1.05">Spring Boot<br><span style="font-size:.58em;opacity:.45;font-weight:400">CMS</span></div>
-      <div class="vd">Headless route was workable; production stayed on the Spring Boot CMS. The PoC still tightened API and integration thinking.</div>
-      <div class="vn">Full PoC · Azure plan · brief architecture notes</div>
+      <div class="vs-title">Spring Boot</div>
+      <div class="vs-sub">CMS</div>
+      <div class="vd">Production stayed on the existing Spring Boot CMS because the team could ship on current ops and ownership with lower migration risk than a Strapi cutover.</div>
+      <div class="vd vd-note">The PoC still tightened API shape and integration thinking for whatever ships next.</div>
     </div>
   </div>
 </div>
