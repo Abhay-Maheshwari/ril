@@ -318,11 +318,16 @@ body.light-bg{background:var(--w)}
 .s-shot-cms .shotwrap{grid-template-columns:1.2fr 1fr}
 .shotwrap img{display:block;width:100%;height:auto;border-radius:8px;border:1px solid rgba(255,255,255,0.12);box-shadow:0 8px 24px rgba(0,0,0,0.4)}
 .s-shot-vms .shotwrap > div,
-.s-shot-cms .shotwrap > div{cursor:none;transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
+.s-shot-cms .shotwrap > div,
+.s-emp .emp-shots > div{cursor:none;transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
 .s-shot-vms .shotwrap > div:hover,
-.s-shot-cms .shotwrap > div:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,0,0,.45);border-color:rgba(217,59,31,.35)}
+.s-shot-cms .shotwrap > div:hover,
+.s-emp .emp-shots > div:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,0,0,.45);border-color:rgba(217,59,31,.35)}
 .s-shot-vms .shotwrap > div:focus-visible,
-.s-shot-cms .shotwrap > div:focus-visible{outline:2px solid var(--r);outline-offset:3px}
+.s-shot-cms .shotwrap > div:focus-visible,
+.s-emp .emp-shots > div:focus-visible{outline:2px solid var(--r);outline-offset:3px}
+.s-emp .emp-shots img{border-radius:8px;border:1px solid rgba(0,0,0,.08);box-shadow:0 8px 24px rgba(0,0,0,.12);transition:box-shadow .22s ease,border-color .22s ease}
+.s-emp .emp-shots > div:hover img{box-shadow:0 12px 28px rgba(0,0,0,.18);border-color:rgba(217,59,31,.35)}
 #shot-lightbox{
   position:fixed;inset:0;z-index:700;
   background:rgba(8,8,8,.94);
@@ -1111,7 +1116,7 @@ const shotLightbox = document.getElementById('shot-lightbox');
 const shotLightboxImg = shotLightbox.querySelector('.shot-lightbox-img');
 const shotLightboxCap = shotLightbox.querySelector('.shot-lightbox-cap');
 const shotLightboxClose = shotLightbox.querySelector('.shot-lightbox-close');
-const shotFrames = document.querySelectorAll('.s-shot-vms .shotwrap > div, .s-shot-cms .shotwrap > div');
+const shotFrames = document.querySelectorAll('.s-shot-vms .shotwrap > div, .s-shot-cms .shotwrap > div, .s-emp .emp-shots > div');
 const shotSlideIndex = {
   vms: slides.findIndex(s => s.classList.contains('s-shot-vms')),
   cms: slides.findIndex(s => s.classList.contains('s-shot-cms')),
@@ -1163,7 +1168,7 @@ function syncOverviewBtns() {
   overviewBtns.forEach((b, i) => b.classList.toggle('on', i === cur));
 }
 
-function setShotLightbox(open, img) {
+function setShotLightbox(open, img, caption) {
   shotLightboxOpen = open;
   shotLightbox.classList.toggle('open', open);
   shotLightbox.hidden = !open;
@@ -1171,7 +1176,7 @@ function setShotLightbox(open, img) {
   if (open && img) {
     shotLightboxImg.src = img.currentSrc || img.src;
     shotLightboxImg.alt = img.alt;
-    shotLightboxCap.textContent = img.alt;
+    shotLightboxCap.textContent = caption || img.alt;
   } else {
     shotLightboxImg.removeAttribute('src');
     shotLightboxCap.textContent = '';
@@ -1181,10 +1186,11 @@ function setShotLightbox(open, img) {
 shotFrames.forEach(frame => {
   const img = frame.querySelector('img');
   if (!img) return;
+  const caption = frame.querySelector('.cap')?.textContent.trim() || img.alt;
   frame.setAttribute('role', 'button');
   frame.setAttribute('tabindex', '0');
-  frame.setAttribute('aria-label', 'Expand ' + (img.alt || 'screenshot'));
-  const open = () => setShotLightbox(true, img);
+  frame.setAttribute('aria-label', 'Expand ' + (caption || 'screenshot'));
+  const open = () => setShotLightbox(true, img, caption);
   frame.addEventListener('click', e => {
     e.stopPropagation();
     open();
@@ -1284,7 +1290,7 @@ document.addEventListener('keydown', e => {
 });
 document.getElementById('deck').addEventListener('click', e => {
   if (overview.classList.contains('open')) return;
-  if (e.target.closest('button,.dot-wrap,.arwb,#shot-lightbox,.s-shot-vms .shotwrap > div,.s-shot-cms .shotwrap > div')) return;
+  if (e.target.closest('button,.dot-wrap,.arwb,#shot-lightbox,.s-shot-vms .shotwrap > div,.s-shot-cms .shotwrap > div,.s-emp .emp-shots > div')) return;
   goTo(cur+1);
 });
 
