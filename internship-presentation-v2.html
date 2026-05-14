@@ -317,6 +317,53 @@ body.light-bg{background:var(--w)}
 }
 .s-shot-cms .shotwrap{grid-template-columns:1.2fr 1fr}
 .shotwrap img{display:block;width:100%;height:auto;border-radius:8px;border:1px solid rgba(255,255,255,0.12);box-shadow:0 8px 24px rgba(0,0,0,0.4)}
+.s-shot-vms .shotwrap > div,
+.s-shot-cms .shotwrap > div{cursor:none;transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
+.s-shot-vms .shotwrap > div:hover,
+.s-shot-cms .shotwrap > div:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,0,0,.45);border-color:rgba(217,59,31,.35)}
+.s-shot-vms .shotwrap > div:focus-visible,
+.s-shot-cms .shotwrap > div:focus-visible{outline:2px solid var(--r);outline-offset:3px}
+#shot-lightbox{
+  position:fixed;inset:0;z-index:700;
+  background:rgba(8,8,8,.94);
+  backdrop-filter:blur(10px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:clamp(1rem,3vw,2.5rem);
+  opacity:0;pointer-events:none;visibility:hidden;
+  transition:opacity .24s ease,visibility .24s;
+}
+#shot-lightbox.open{opacity:1;pointer-events:auto;visibility:visible}
+#shot-lightbox img{
+  max-width:min(96vw,1400px);
+  max-height:calc(100vh - 6rem);
+  width:auto;height:auto;
+  object-fit:contain;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 20px 60px rgba(0,0,0,.55);
+}
+.shot-lightbox-cap{
+  margin-top:1rem;
+  font-family:var(--FC);
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:rgba(244,239,230,.45);
+  text-align:center;
+  max-width:min(96vw,1400px);
+}
+.shot-lightbox-close{
+  position:absolute;top:1.5rem;right:1.75rem;
+  width:40px;height:40px;
+  border:1px solid rgba(244,239,230,.16);
+  background:rgba(244,239,230,.04);
+  color:rgba(244,239,230,.72);
+  font-size:22px;line-height:1;
+  cursor:none;
+  transition:border-color .2s,color .2s,background .2s;
+}
+.shot-lightbox-close:hover{border-color:var(--r);color:var(--r);background:rgba(217,59,31,.08)}
 .cap{font-family:var(--FC);font-size:10px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;opacity:.4;margin-top:1rem}
 
 /* ─── SLIDE 5 — VMS SECURITY ─── */
@@ -525,7 +572,7 @@ body.light-bg{background:var(--w)}
 <div id="cur"></div>
 <div id="prog"></div>
 <div id="ctr">01 / 18</div>
-<div id="hint">← → Arrow keys · Click to advance</div>
+<div id="hint">← → · V VMS screenshots · C CMS screenshots · G jump to slide</div>
 
 <div id="deck">
 
@@ -682,7 +729,7 @@ body.light-bg{background:var(--w)}
       <li><b>Identity and verification</b> — AD auto-fetch and reliable OTP verification (SMS + Email)</li>
       <li><b>Keyboard shortcuts system</b> — Alt+Q cheatsheet</li>
       <li><b>Checkout notifications</b> — automated alerts for overdue visitors via scheduled task</li>
-      <li><b>JWT Enhancement</b> — JWT claims data moved to JWT, eliminated redundant DB calls on every request</li>
+
     </ul>
   </div>
 </div>
@@ -1040,10 +1087,16 @@ body.light-bg{background:var(--w)}
   <div class="overview-inner">
     <div class="overview-h">
       <span>Jump to slide</span>
-      <span class="overview-x">Esc · G</span>
+      <span class="overview-x">Esc · G · V · C</span>
     </div>
     <div class="overview-grid" id="overview-grid"></div>
   </div>
+</div>
+
+<div id="shot-lightbox" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="Expanded screenshot">
+  <button type="button" class="shot-lightbox-close" aria-label="Close expanded screenshot">&times;</button>
+  <img class="shot-lightbox-img" alt=""/>
+  <p class="shot-lightbox-cap"></p>
 </div>
 
 <script>
@@ -1054,8 +1107,17 @@ const prog = document.getElementById('prog');
 const hint = document.getElementById('hint');
 const overview = document.getElementById('overview');
 const overviewGrid = document.getElementById('overview-grid');
+const shotLightbox = document.getElementById('shot-lightbox');
+const shotLightboxImg = shotLightbox.querySelector('.shot-lightbox-img');
+const shotLightboxCap = shotLightbox.querySelector('.shot-lightbox-cap');
+const shotLightboxClose = shotLightbox.querySelector('.shot-lightbox-close');
+const shotFrames = document.querySelectorAll('.s-shot-vms .shotwrap > div, .s-shot-cms .shotwrap > div');
+const shotSlideIndex = {
+  vms: slides.findIndex(s => s.classList.contains('s-shot-vms')),
+  cms: slides.findIndex(s => s.classList.contains('s-shot-cms')),
+};
 const TOTAL = slides.length;
-let cur = 0, busy = false;
+let cur = 0, busy = false, shotLightboxOpen = false;
 
 const pad = v => String(v).padStart(2, '0');
 ctr.textContent = pad(1) + ' / ' + pad(TOTAL);
@@ -1101,6 +1163,49 @@ function syncOverviewBtns() {
   overviewBtns.forEach((b, i) => b.classList.toggle('on', i === cur));
 }
 
+function setShotLightbox(open, img) {
+  shotLightboxOpen = open;
+  shotLightbox.classList.toggle('open', open);
+  shotLightbox.hidden = !open;
+  shotLightbox.setAttribute('aria-hidden', open ? 'false' : 'true');
+  if (open && img) {
+    shotLightboxImg.src = img.currentSrc || img.src;
+    shotLightboxImg.alt = img.alt;
+    shotLightboxCap.textContent = img.alt;
+  } else {
+    shotLightboxImg.removeAttribute('src');
+    shotLightboxCap.textContent = '';
+  }
+}
+
+shotFrames.forEach(frame => {
+  const img = frame.querySelector('img');
+  if (!img) return;
+  frame.setAttribute('role', 'button');
+  frame.setAttribute('tabindex', '0');
+  frame.setAttribute('aria-label', 'Expand ' + (img.alt || 'screenshot'));
+  const open = () => setShotLightbox(true, img);
+  frame.addEventListener('click', e => {
+    e.stopPropagation();
+    open();
+  });
+  frame.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      e.stopPropagation();
+      open();
+    }
+  });
+});
+
+shotLightboxClose.addEventListener('click', e => {
+  e.stopPropagation();
+  setShotLightbox(false);
+});
+shotLightbox.addEventListener('click', e => {
+  if (e.target === shotLightbox) setShotLightbox(false);
+});
+
 function goTo(n) {
   if (busy || n === cur) return;
   busy = true;
@@ -1131,6 +1236,11 @@ document.getElementById('prev').addEventListener('click', () => goTo(cur-1));
 document.addEventListener('keydown', e => {
   if (e.target.closest('input,textarea')) return;
   const ovOpen = overview.classList.contains('open');
+  if (e.key === 'Escape' && shotLightboxOpen) {
+    e.preventDefault();
+    setShotLightbox(false);
+    return;
+  }
   if (e.key === 'Escape' && ovOpen) {
     e.preventDefault();
     setOverview(false);
@@ -1141,7 +1251,29 @@ document.addEventListener('keydown', e => {
     setOverview(!ovOpen);
     return;
   }
+  if (e.key === 'v' || e.key === 'V') {
+    if (shotSlideIndex.vms >= 0) {
+      e.preventDefault();
+      if (ovOpen) setOverview(false);
+      if (shotLightboxOpen) setShotLightbox(false);
+      goTo(shotSlideIndex.vms);
+    }
+    return;
+  }
+  if (e.key === 'c' || e.key === 'C') {
+    if (shotSlideIndex.cms >= 0) {
+      e.preventDefault();
+      if (ovOpen) setOverview(false);
+      if (shotLightboxOpen) setShotLightbox(false);
+      goTo(shotSlideIndex.cms);
+    }
+    return;
+  }
   if (ovOpen && ['ArrowRight','ArrowDown',' ','ArrowLeft','ArrowUp'].includes(e.key)) {
+    e.preventDefault();
+    return;
+  }
+  if (shotLightboxOpen && ['ArrowRight','ArrowDown',' ','ArrowLeft','ArrowUp','Home','End','g','G'].includes(e.key)) {
     e.preventDefault();
     return;
   }
@@ -1152,14 +1284,14 @@ document.addEventListener('keydown', e => {
 });
 document.getElementById('deck').addEventListener('click', e => {
   if (overview.classList.contains('open')) return;
-  if (e.target.closest('button,.dot-wrap,.arwb')) return;
+  if (e.target.closest('button,.dot-wrap,.arwb,#shot-lightbox,.s-shot-vms .shotwrap > div,.s-shot-cms .shotwrap > div')) return;
   goTo(cur+1);
 });
 
 let tx=0,ty=0;
 document.addEventListener('touchstart', e => { tx=e.touches[0].clientX; ty=e.touches[0].clientY; });
 document.addEventListener('touchend', e => {
-  if (overview.classList.contains('open')) return;
+  if (overview.classList.contains('open') || shotLightboxOpen) return;
   const dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
   if (Math.abs(dx)>Math.abs(dy)){ if(dx<-50)goTo(cur+1); else if(dx>50)goTo(cur-1); }
   else { if(dy<-50)goTo(cur+1); else if(dy>50)goTo(cur-1); }
